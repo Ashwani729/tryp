@@ -1,118 +1,407 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import dynamic from "next/dynamic";
 
-const inter = Inter({ subsets: ['latin'] })
+import { useState } from "react";
+import {
+  BsFillArrowDownCircleFill,
+  BsFillArrowUpCircleFill,
+} from "react-icons/bs";
+const data: { [key: string]: string | number }[] = [
+  {
+    timeStamp: "35 minutes ago ",
+    purchaseId: 2235678,
+    mail: "upadhyay9122@gmail.com",
+    name: "Ashwani",
+    source: "",
+    status: "failed",
+  },
+  {
+    timeStamp: "5 hours ago ",
+    purchaseId: 2356789,
+    mail: "rohan22@gmail.com",
+    name: "Rohan",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "57 minutes ago ",
+    purchaseId: 7865985,
+    mail: "vishwajeet34@gmail.com",
+    name: "Vishwajeet Raj",
+    source: "",
+    status: "waiting",
+  },
+  {
+    timeStamp: "2 hours ago ",
+    purchaseId: 5678453,
+    mail: "shrija@gmail.com",
+    name: "Shrija Sinha",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "1 hours ago ",
+    purchaseId: 6578903,
+    mail: "vishant@gmail.com",
+    name: "Vishant",
+    source: "",
+    status: "failed",
+  },
+  {
+    timeStamp: "2 minutes  ago ",
+    purchaseId: 2235678,
+    mail: "alok25@gmail.com",
+    name: "Alok k",
+    source: "",
+    status: "waiting",
+  },
+  {
+    timeStamp: "24 minutes ago ",
+    purchaseId: 4567342,
+    mail: "supriya@gmail.com",
+    name: "Supriya ",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "35 minutes ago ",
+    purchaseId: 2235678,
+    mail: "upadhyay9122@gmail.com",
+    name: "Shwani",
+    source: "",
+    status: "failed",
+  },
+  {
+    timeStamp: "5 hours ago ",
+    purchaseId: 2356789,
+    mail: "rohan22@gmail.com",
+    name: "Roan",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "57 minutes ago ",
+    purchaseId: 7865985,
+    mail: "vishwajeet34@gmail.com",
+    name: " Raj",
+    source: "",
+    status: "waiting",
+  },
+  {
+    timeStamp: "8 hours ago ",
+    purchaseId: 5678453,
+    mail: "shrija@gmail.com",
+    name: " Sinha",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "9 hours ago ",
+    purchaseId: 6578903,
+    mail: "vishant@gmail.com",
+    name: "Shant",
+    source: "",
+    status: "failed",
+  },
+  {
+    timeStamp: "2 minutes  ago ",
+    purchaseId: 2235678,
+    mail: "alok25@gmail.com",
+    name: "Lokk",
+    source: "",
+    status: "waiting",
+  },
+  {
+    timeStamp: "48 minutes ago ",
+    purchaseId: 4567342,
+    mail: "priya@gmail.com",
+    name: "Priya ",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "35 minutes ago ",
+    purchaseId: 2235678,
+    mail: "upadhyay9122@gmail.com",
+    name: "Ani",
+    source: "",
+    status: "failed",
+  },
+  {
+    timeStamp: "2 weeks ago ",
+    purchaseId: 2356789,
+    mail: "rohan22@gmail.com",
+    name: "Anshul",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "57 minutes ago ",
+    purchaseId: 7865985,
+    mail: "vishwajeet34@gmail.com",
+    name: "Vishwajeet Raj",
+    source: "",
+    status: "waiting",
+  },
+  {
+    timeStamp: "2 hours ago ",
+    purchaseId: 5678453,
+    mail: "shrija@gmail.com",
+    name: "Shrija Sinha",
+    source: "",
+    status: "passed",
+  },
+  {
+    timeStamp: "1 hours ago ",
+    purchaseId: 6578903,
+    mail: "vishant@gmail.com",
+    name: "Vishant",
+    source: "",
+    status: "failed",
+  },
+  {
+    timeStamp: "2 minutes  ago ",
+    purchaseId: 2235678,
+    mail: "alok25@gmail.com",
+    name: "Alok",
+    source: "",
+    status: "waiting",
+  },
+  {
+    timeStamp: "24 minutes ago ",
+    purchaseId: 4567342,
+    mail: "supriya@gmail.com",
+    name: "Aabhi",
+    source: "",
+    status: "passed",
+  },
+];
+function Home() {
+  const [index, setIndex] = useState(5);
+  const [item, setItem] = useState(data);
+  const [store, setStore] = useState(data.slice(0, index));
+  const [value, setValue] = useState("");
+  const [sortName, setSortName] = useState(false);
+  const [sortStatus, setSortStatus] = useState(false);
+  const [sortTime, setSortTime] = useState(false);
+  const [col, setCol] = useState("");
 
-export default function Home() {
+  function handleSearch(e: any) {
+    setValue(e.target.value);
+
+    const st = item.filter((element) => {
+      if (typeof element.name === "number") {
+        return;
+      }
+      return (
+        element.name.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1
+      );
+    });
+    setStore(st);
+  }
+  function handleSortName() {
+    if (sortName === false) {
+      setCol("NAME");
+      const newArr = JSON.parse(JSON.stringify(store));
+
+      newArr.sort((a: any, b: any) =>
+        a.name.toLowerCase().localeCompare(b.name.toUpperCase())
+      );
+
+      setStore(newArr);
+      setSortName(true);
+    } else {
+      setStore(data.slice(index - 5, index));
+      setSortName(false);
+    }
+  }
+  function handleSortStatus() {
+    if (sortStatus == false) {
+      setCol("STATUS");
+      const newArr = JSON.parse(JSON.stringify(store));
+      newArr.sort(function (x: any, y: any) {
+        var n1 = x.status;
+        var n2 = y.status;
+        return n1 == n2 ? 0 : n1 < n2 ? -1 : 1;
+      });
+      setStore(newArr);
+      setSortStatus(true);
+    } else {
+      setStore(data.slice(index - 5, index));
+      setSortStatus(false);
+    }
+  }
+  function handleSortTime() {
+    if (sortTime == false) {
+      setCol("TIME");
+      const timeAgoToMilliseconds: { [key: string]: number } = {
+        minutes: 1000 * 60,
+        hours: 1000 * 60 * 60,
+        days: 1000 * 60 * 60 * 24,
+        weeks: 1000 * 60 * 60 * 24 * 7,
+      };
+      const newArr = JSON.parse(JSON.stringify(store));
+      newArr.sort((a: any, b: any) => {
+        const timeA = a.timeStamp.split(" ");
+        const timeB = b.timeStamp.split(" ");
+        const unitA = timeA[1].trim() as string;
+        const unitB = timeB[1].trim() as string;
+        const valueA = parseInt(timeA[0], 10);
+        const valueB = parseInt(timeB[0], 10);
+
+        const timeInMillisecondsA = timeAgoToMilliseconds[unitA] * valueA;
+        const timeInMillisecondsB = timeAgoToMilliseconds[unitB] * valueB;
+
+        return timeInMillisecondsA - timeInMillisecondsB;
+      });
+      setStore(newArr);
+      setSortTime(true);
+    } else {
+      setStore(data.slice(index - 5, index));
+      setSortTime(false);
+    }
+  }
+  function handlePrev() {
+    setSortTime(false);
+    setSortStatus(false);
+    setSortName(false);
+    setStore(data.slice(index - 10, index - 5));
+    setIndex(index - 5);
+  }
+  function handleNext() {
+    setSortTime(false);
+    setSortStatus(false);
+    setSortName(false);
+    setStore(data.slice(index, index + 5));
+    setIndex(index + 5);
+  }
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="">
+      <div className="flex justify-center mx-auto my-4">
+        <div className="w-4/6 mx-auto">
+          <input
+            onChange={handleSearch}
+            value={value}
+            className="flex justify-center px-3 py-2 leading-tight text-gray-700 transition duration-300 ease-in-out delay-150 border rounded shadow appearance-none hover:-translate-y-1 hover:scale-110 w- focus:outline-none focus:shadow-outline"
+            type="text"
+            placeholder="Search..."
+          />
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="flex">
+        <table className="w-5/6 mx-auto ">
+          <thead className="h-8 text-sm text-left text-slate-600 ">
+            <tr className="">
+              <th>
+                <div
+                  onClick={handleSortTime}
+                  className="flex hover:cursor-pointer"
+                >
+                  <div>TIMESTAMP</div>
+                  <button className="mx-3 ">
+                    {sortTime === true && col === "TIME" ? (
+                      <BsFillArrowUpCircleFill />
+                    ) : (
+                      <BsFillArrowDownCircleFill />
+                    )}
+                  </button>
+                </div>
+              </th>
+              <th>PURCHASE ID</th>
+              <th>MAIL</th>
+              <th>
+                <div
+                  onClick={handleSortName}
+                  className="flex hover:cursor-pointer "
+                >
+                  <div>NAME</div>
+                  <button className="mx-3 ">
+                    {sortName === true && col === "NAME" ? (
+                      <BsFillArrowUpCircleFill />
+                    ) : (
+                      <BsFillArrowDownCircleFill />
+                    )}
+                  </button>
+                </div>
+              </th>
+              <th>SOURCE</th>
+              <th>
+                <div
+                  onClick={handleSortStatus}
+                  className="flex hover:cursor-pointer "
+                >
+                  <div>STATUS</div>
+                  <button className="mx-3 ">
+                    {sortStatus === true && col === "STATUS" ? (
+                      <BsFillArrowUpCircleFill />
+                    ) : (
+                      <BsFillArrowDownCircleFill />
+                    )}
+                  </button>
+                </div>
+              </th>
+              <th>SELECT</th>
+            </tr>
+          </thead>
+          <tbody>
+            {store.map((val, key) => {
+              return (
+                <tr
+                  className="h-16 text-sm font-semibold text-left even:bg-white odd:bg-slate-50 text-slate-600 "
+                  key={key}
+                >
+                  <td>{val.timeStamp}</td>
+                  <td>{val.purchaseId}</td>
+                  <td>{val.mail}</td>
+                  <td>{val.name}</td>
+                  <td>{val.source}</td>
+                  <td className="">
+                    <div
+                      className={`   align-middle flex justify-center h-6  text-sm ${
+                        val.status === "failed"
+                          ? "bg-red-200"
+                          : val.status === "waiting"
+                          ? "bg-yellow-200"
+                          : "bg-green-200"
+                      } rounded-2xl w-14 `}
+                    >
+                      {val.status}
+                    </div>
+                  </td>
+                  <td>
+                    <button className="flex px-4 py-2 font-semibold text-gray-800 transition duration-300 ease-in-out delay-150 border border-gray-400 rounded shadow hover:-translate-y-1 hover:scale-110 hover:bg-slate-100">
+                      Select
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className="flex ">
+        <div className="flex mx-auto ">
+          <div>
+            <button
+              onClick={handlePrev}
+              className="px-4 py-2 font-bold text-gray-800 transition duration-300 ease-in-out delay-150 bg-gray-300 rounded-l hover:-translate-y-1 hover:translate-x-1 hover:scale-110 hover:bg-gray-400 "
+            >
+              prev
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={handleNext}
+              className="px-4 py-2 font-bold text-gray-800 transition duration-300 ease-in-out delay-150 bg-gray-300 rounded-r hover:-translate-y-1 hover:translate-x-1 hover:scale-110 hover:bg-gray-400"
+            >
+              next
+            </button>
+          </div>
+        </div>
       </div>
-    </main>
-  )
+    </div>
+  );
 }
+export default dynamic(async () => Promise.resolve(Home), {
+  ssr: false,
+});
